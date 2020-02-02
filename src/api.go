@@ -4,11 +4,15 @@ import (
 	"fmt"
 	"log"
 	"net/http"
-
 	"gopkg.in/mgo.v2/bson"
-
 	"github.com/gorilla/mux"
 )
+
+import "models"
+import "dao"
+
+var dao = RatingsDAO{}
+
 func AllRatingsEndPoint(w http.ResponseWriter, r * http.Request) {
 	fmt.Fprintln(w, "not implemented yet !")
 }
@@ -19,16 +23,8 @@ func CreateRatingEndPoint(w http.ResponseWriter, r * http.Request) {
 	defer r.Body.Close()
 	var rating Rating
 	json.NewDecoder(r.Body).Decode(&rating)
-	if err != nil {
-		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
-		return
-	}
 	rating.id = bson.NewObjectId()
 	dao.Insert(rating)
-	if err != nil {
-		respondWithError(w, http.StatusInternalServerError, err.Error())
-		return
-	}
 	respondWithJson(w, http.StatusCreated, rating)
 }
 func DeleteRatingEndPoint(w http.ResponseWriter, r * http.Request) {

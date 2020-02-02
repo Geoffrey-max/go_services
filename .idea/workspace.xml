@@ -1,7 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="37e75a1d-da71-4790-9c33-e9c9746bf0f6" name="Default Changelist" comment="" />
+    <list default="true" id="37e75a1d-da71-4790-9c33-e9c9746bf0f6" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/api.go" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/.idea/inspectionProfiles/Project_Default.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/.idea/modules.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/.idea/services-twitter-go.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/api.go" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/pkg/windows_amd64/github.com/BurntSushi/toml.a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/pkg/windows_amd64/github.com/gorilla/mux.a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/pkg/windows_amd64/gopkg.in/mgo.v2.a" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/src/github.com/BurntSushi/toml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/src/github.com/gorilla/mux" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services/src/gopkg.in/mgo.v2" beforeDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -9,7 +26,7 @@
   </component>
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
-    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/src/github.com/BurntSushi/toml" />
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
@@ -22,6 +39,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="go.import.settings.migrated" value="true" />
