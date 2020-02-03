@@ -1,19 +1,25 @@
 package dao
 
 import (
+	"context"
+	"fmt"
+	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/mongo"
+	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
-
-	. "../models/rating.go"
-	mgo "gopkg.in/mgo.v2"
-	"gopkg.in/mgo.v2/bson"
+	"models"
+	"time"
 )
 
 type RatingsDAO struct {
-	Server		string
-	Database	string
+	Db_username string
+	Db_password string
+	Db_address  string
+	Database    string
 }
 
-var db *mgo.Database
+var db *mongo.Database
+
 
 const (
 	COLLECTION = "ratings"
@@ -21,35 +27,51 @@ const (
 
 // Establish a connection to database
 func (r *RatingsDAO) Connect() {
-	session, err := mgo.Dial(r.Server)
+	fmt.Println("En connexion")
+	sessionOptions := options.Client().ApplyURI(fmt.Sprintf("mongodb+srv://%s:%s@%s/test?retryWrites=true&w=majority", r.Db_username, r.Db_password, r.Db_address))
+	session, err := mongo.Connect(context.TODO(), sessionOptions)
 	if err != nil {
 		log.Fatal(err)
 	}
-	db = session.DB(r.Database)
+	db = session.Database(fmt.Sprintf("%s", r.Database))
+	fmt.Println("Vous êtes connecté")
 }
 
 // Get all ratings
-func (m *RatingsDAO) FindAll() ([]Rating, error) {
-	var ratings []Rating
-	err := db.C(COLLECTION).Find(bson.M{}).All(&ratings)
+func (m *RatingsDAO) FindAll() ([]models.Rating, error) {
+	var ratings []models.Rating
+	fmt.Println("au moins on est rentré dans la fonction findall")
+	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
+	fmt.Println("il rentre dans la collection")
+	var cursor, err = db.Collection(COLLECTION).Find(ctx, bson.M{})
+	fmt.Println("il est sorti avec son curseur")
+	if err != nil {
+		return ratings , err
+	}
+	defer cursor.Close(ctx)
+	for cursor.Next(ctx){
+		var rating models.Rating
+		cursor.Decode(&rating)
+		ratings = append(ratings, rating)
+	}
 	return ratings, err
 }
 
 // Find rating by id
-func (m *RatingsDAO) FindById(id string) (Rating, error) {
-	var rating Rating
-	err := db.C(COLLECTION).FindId(bson.ObjectIdHex(id)).One(&rating)
+func (m *RatingsDAO) FindById(id string) (models.Rating, error) {
+	var rating models.Rating
+	err := db.Collection(COLLECTION).FindOne(context.TODO(), bson.M{"_id": id}).Decode(&rating)
 	return rating, err
 }
 
 // Insert rating
-func (r *RatingsDAO) Insert(movie Rating) error {
-	err := db.C(COLLECTION).Insert(&movie)
+func (r *RatingsDAO) Insert(rating models.Rating) error {
+	_, err := db.Collection(COLLECTION).InsertOne(context.TODO(), rating)
 	return err
 }
 
 // Delete rating
-func (r *RatingsDAO) Delete(rating Rating) error {
-	err := db.C(COLLECTION).Remove(&rating)
+func (r *RatingsDAO) Delete(rating models.Rating) error {
+	_, err := db.Collection(COLLECTION).DeleteOne(context.TODO(), rating)
 	return err
 }

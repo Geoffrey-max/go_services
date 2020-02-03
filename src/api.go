@@ -1,35 +1,72 @@
 package main
+
 import (
+	"config"
+	"dao"
 	"encoding/json"
 	"fmt"
-	"log"
-	"net/http"
-	"gopkg.in/mgo.v2/bson"
 	"github.com/gorilla/mux"
+	"gopkg.in/mgo.v2/bson"
+	"log"
+	"models"
+	"net/http"
 )
 
-import "models"
-import "dao"
+var account = config.Config{}
+var data = dao.RatingsDAO{}
 
-var dao = RatingsDAO{}
-
-func AllRatingsEndPoint(w http.ResponseWriter, r * http.Request) {
+func AllRatingsEndPoint(w http.ResponseWriter, r *http.Request) {
+	ratings, err := data.FindAll()
+	fmt.Println("salut mon pote")
+	if err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	fmt.Println("pourquoi ca marche pas ?")
+	respondWithJson(w, http.StatusOK, ratings)
+}
+func FindRatingEndpoint(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "not implemented yet !")
 }
-func FindRatingEndpoint(w http.ResponseWriter, r * http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
-}
-func CreateRatingEndPoint(w http.ResponseWriter, r * http.Request) {
+func CreateRatingEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
-	var rating Rating
-	json.NewDecoder(r.Body).Decode(&rating)
-	rating.id = bson.NewObjectId()
-	dao.Insert(rating)
+	var rating models.Rating
+	if err := json.NewDecoder(r.Body).Decode(&rating); err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	rating.Id = bson.NewObjectId()
+	if err := data.Insert(rating); err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
 	respondWithJson(w, http.StatusCreated, rating)
 }
-func DeleteRatingEndPoint(w http.ResponseWriter, r * http.Request) {
+func DeleteRatingEndPoint(w http.ResponseWriter, r *http.Request) {
 	fmt.Fprintln(w, "not implemented yet !")
 }
+
+func respondWithError(w http.ResponseWriter, code int, msg string) {
+	respondWithJson(w, code, map[string]string{"error": msg})
+}
+
+func respondWithJson(w http.ResponseWriter, code int, payload interface{}) {
+	response, _ := json.Marshal(payload)
+	w.Header().Set("Content-Type", "application/json")
+	w.WriteHeader(code)
+	w.Write(response)
+}
+
+func init() {
+	account.Read()
+	fmt.Println("cherche une femme")
+	data.Db_username = account.Db_username
+	data.Db_password = account.Db_password
+	data.Db_address = account.Db_address
+	data.Database = account.Database
+	data.Connect()
+}
+
 func main() {
 	r := mux.NewRouter()
 	r.HandleFunc("/ratings", AllRatingsEndPoint).Methods("GET")
@@ -37,7 +74,7 @@ func main() {
 	r.HandleFunc("/rating", DeleteRatingEndPoint).Methods("DELETE")
 	r.HandleFunc("/ratings/{id}", FindRatingEndpoint).Methods("GET")
 	err := http.ListenAndServe(":8002", r)
-	if  err != nil {
+	if err != nil {
 		log.Fatal(err)
 	}
 }
