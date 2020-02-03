@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"go.mongodb.org/mongo-driver/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 	"log"
@@ -40,11 +41,8 @@ func (r *RatingsDAO) Connect() {
 // Get all ratings
 func (m *RatingsDAO) FindAll() ([]models.Rating, error) {
 	var ratings []models.Rating
-	fmt.Println("au moins on est rentré dans la fonction findall")
 	ctx, _ := context.WithTimeout(context.Background(), 30*time.Second)
-	fmt.Println("il rentre dans la collection")
 	var cursor, err = db.Collection(COLLECTION).Find(ctx, bson.M{})
-	fmt.Println("il est sorti avec son curseur")
 	if err != nil {
 		return ratings , err
 	}
@@ -58,9 +56,10 @@ func (m *RatingsDAO) FindAll() ([]models.Rating, error) {
 }
 
 // Find rating by id
-func (m *RatingsDAO) FindById(id string) (models.Rating, error) {
+func (m *RatingsDAO) FindById(id primitive.ObjectID) (models.Rating, error) {
 	var rating models.Rating
-	err := db.Collection(COLLECTION).FindOne(context.TODO(), bson.M{"_id": id}).Decode(&rating)
+	filter := bson.M{"_id": id}
+	err := db.Collection(COLLECTION).FindOne(context.TODO(), filter).Decode(&rating)
 	return rating, err
 }
 

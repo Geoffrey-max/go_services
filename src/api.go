@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/gorilla/mux"
-	"gopkg.in/mgo.v2/bson"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 	"log"
 	"models"
 	"net/http"
@@ -17,16 +17,22 @@ var data = dao.RatingsDAO{}
 
 func AllRatingsEndPoint(w http.ResponseWriter, r *http.Request) {
 	ratings, err := data.FindAll()
-	fmt.Println("salut mon pote")
 	if err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
 	}
-	fmt.Println("pourquoi ca marche pas ?")
 	respondWithJson(w, http.StatusOK, ratings)
 }
 func FindRatingEndpoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
+	params := mux.Vars(r)
+	id , _ := primitive.ObjectIDFromHex(params["id"])
+	rating, err := data.FindById(id)
+	fmt.Println(rating)
+	if err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid Rating ID")
+		return
+	}
+	respondWithJson(w, http.StatusOK, rating)
 }
 func CreateRatingEndPoint(w http.ResponseWriter, r *http.Request) {
 	defer r.Body.Close()
@@ -35,7 +41,7 @@ func CreateRatingEndPoint(w http.ResponseWriter, r *http.Request) {
 		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
 		return
 	}
-	rating.Id = bson.NewObjectId()
+	rating.Id = primitive.NewObjectID()
 	if err := data.Insert(rating); err != nil {
 		respondWithError(w, http.StatusInternalServerError, err.Error())
 		return
@@ -43,7 +49,21 @@ func CreateRatingEndPoint(w http.ResponseWriter, r *http.Request) {
 	respondWithJson(w, http.StatusCreated, rating)
 }
 func DeleteRatingEndPoint(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintln(w, "not implemented yet !")
+	defer r.Body.Close()
+	var rating models.Rating
+	if err := json.NewDecoder(r.Body).Decode(&rating);
+	err != nil {
+		respondWithError(w, http.StatusBadRequest, "Invalid request payload")
+		return
+	}
+	if err := data.Delete(rating);
+	err != nil {
+		respondWithError(w, http.StatusInternalServerError, err.Error())
+		return
+	}
+	respondWithJson(w, http.StatusOK, map[string] string {
+		"result": "success",
+	})
 }
 
 func respondWithError(w http.ResponseWriter, code int, msg string) {

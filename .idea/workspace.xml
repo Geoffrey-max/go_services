@@ -2,13 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="37e75a1d-da71-4790-9c33-e9c9746bf0f6" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/api.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/api.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config.toml" beforeDir="false" afterPath="$PROJECT_DIR$/src/config.toml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/config/config.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/config/config.go" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/dao/ratings_dao.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/dao/ratings_dao.go" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/github.com/Geoffrey-max/go_services" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/models/rating.go" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/rating.go" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -26,6 +22,7 @@
   <component name="GOROOT" path="C:\Go" />
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="GoLibraries">
     <option name="indexEntireGoPath" value="false" />
